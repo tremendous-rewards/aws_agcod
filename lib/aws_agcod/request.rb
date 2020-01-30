@@ -18,7 +18,15 @@ class AGCOD
       @action = action
       @params = sanitized_params(params)
 
-      @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: config.timeout).body)
+      @response = Response.new(
+        HTTParty.post(
+          uri,
+          body: body,
+          headers: signed_headers,
+          timeout: config.timeout,
+          debug_output: config.debug_output
+        ).body
+      )
     end
 
     private
