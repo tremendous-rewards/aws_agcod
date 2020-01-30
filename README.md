@@ -28,21 +28,21 @@ Or install it yourself as:
 ```ruby
 require "aws_agcod"
 
-AGCOD.configure do |config|
-  config.access_key = "YOUR ACCESS KEY"
-  config.secret_key = "YOUR SECRET KEY"
-  config.partner_id = "PARTNER ID"
+client = AGCOD.new({
+  access_key: "YOUR ACCESS KEY",
+  secret_key: "YOUR SECRET KEY",
+  partner_id: "PARTNER ID",
 
   # The `production` config is important as it determines which endpoint
   # you're hitting.
-  config.production = true  # This defaults to false.
+  production: true,  # This defaults to false.
 
   # Optionally, you can customize the URI completely.
-  config.uri = "https://my-custom-agcod-endpoint.com"
+  uri: "https://my-custom-agcod-endpoint.com"
 
-  config.region  = "us-east-1" # default
-  config.timeout = 30          # default
-end
+  region: "us-east-1" # default
+  timeout: 30          # default
+})
 ```
 
 #### Create Gift Code/Card
@@ -52,7 +52,7 @@ request_id = "test"
 amount = 10
 currency = "USD" # default to USD, available types are: USD, EUR, JPY, CNY, CAD
 
-request = AGCOD::CreateGiftCard.new(request_id, amount, currency)
+request = client.create_gift_card.execute(request_id, amount, currency)
 
 # When succeed
 if request.success?
@@ -71,7 +71,7 @@ end
 request_id = "test"
 gc_id = "test_gc_id"
 
-request = AGCOD::CancelGiftCard.new(request_id, gc_id)
+request = client.cancel_gift_card.execute(request_id, gc_id)
 
 # When failed
 unless request.success?
@@ -89,7 +89,7 @@ page = 1
 per_page = 100
 show_no_ops = false # Whether or not to show activities with no operation
 
-request = AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
+request = client.activity_list.execute(request_id, start_time, end_time, page, per_page, show_no_ops)
 
 if request.success?
   request.results.each do |activity|

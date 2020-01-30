@@ -1,6 +1,4 @@
-require "aws_agcod/request"
-
-module AGCOD
+class AGCOD
   class CreateGiftCardError < StandardError; end
 
   class CreateGiftCard
@@ -8,14 +6,20 @@ module AGCOD
 
     CURRENCIES = %w(USD EUR JPY CNY CAD GBP).freeze
 
+    attr_accessor :request
+
     def_delegators :@response, :status, :success?, :error_message
 
-    def initialize(request_id, amount, currency = "USD")
+    def initialize(request)
+      @request = request
+    end
+
+    def execute(request_id, amount, currency = "USD")
       unless CURRENCIES.include?(currency.to_s)
         raise CreateGiftCardError, "Currency #{currency} not supported, available types are #{CURRENCIES.join(", ")}"
       end
 
-      @response = Request.new("CreateGiftCard",
+      @response = request.create("CreateGiftCard",
         "creationRequestId" => request_id,
         "value" => {
           "currencyCode" => currency,

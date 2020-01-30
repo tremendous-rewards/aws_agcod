@@ -6,7 +6,7 @@ require "openssl"
 require "uri"
 require "pathname"
 
-module AGCOD
+class AGCOD
   class Signature
     SERVICE = "AGCODService"
 

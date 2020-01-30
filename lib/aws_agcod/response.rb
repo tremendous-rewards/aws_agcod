@@ -1,6 +1,6 @@
 require "json"
 
-module AGCOD
+class AGCOD
   class Response
     attr_reader :status, :payload
 

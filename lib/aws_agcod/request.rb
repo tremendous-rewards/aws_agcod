@@ -3,18 +3,22 @@ require "aws_agcod/response"
 require "httparty"
 require "yaml"
 
-module AGCOD
+class AGCOD
   class Request
     TIME_FORMAT = "%Y%m%dT%H%M%SZ".freeze
     MOCK_REQUEST_IDS = %w(F0000 F2005).freeze
 
-    attr_reader :response
+    attr_reader :response, :config
 
-    def initialize(action, params)
+    def initialize(config)
+      @config = config
+    end
+
+    def create(action, params)
       @action = action
       @params = sanitized_params(params)
 
-      @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: AGCOD.config.timeout).body)
+      @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: config.timeout).body)
     end
 
     private
@@ -31,11 +35,11 @@ module AGCOD
         "date" => time.to_s
       }
 
-      Signature.new(AGCOD.config).sign(uri, headers, body)
+      Signature.new(config).sign(uri, headers, body)
     end
 
     def uri
-      @uri ||= URI("#{AGCOD.config.uri}/#{@action}")
+      @uri ||= URI("#{config.uri}/#{@action}")
     end
 
     def body
@@ -62,7 +66,7 @@ module AGCOD
     end
 
     def partner_id
-      @partner_id ||= AGCOD.config.partner_id
+      @partner_id ||= config.partner_id
     end
   end
 end

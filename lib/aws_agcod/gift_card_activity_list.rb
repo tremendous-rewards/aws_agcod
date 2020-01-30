@@ -1,6 +1,4 @@
-require "aws_agcod/request"
-
-module AGCOD
+class AGCOD
   class GiftCardActivityListError < StandardError; end
 
   class GiftCardActivity
@@ -31,12 +29,18 @@ module AGCOD
     LIMIT = 1000 # limit per request
     TIME_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
 
+    attr_accessor :request
+
     def_delegators :@response, :success?, :error_message
 
-    def initialize(request_id, start_time, end_time, page = 1, per_page = 100, show_no_ops = false)
+    def initialize(request)
+      @request = request
+    end
+
+    def execute(request_id, start_time, end_time, page = 1, per_page = 100, show_no_ops = false)
       raise GiftCardActivityListError, "Only #{LIMIT} records allowed per request." if per_page > LIMIT
 
-      @response = Request.new("GetGiftCardActivityPage",
+      @response = request.create("GetGiftCardActivityPage",
         "requestId" => request_id,
         "utcStartDate" => start_time.strftime(TIME_FORMAT),
         "utcEndDate" => end_time.strftime(TIME_FORMAT),
@@ -47,7 +51,9 @@ module AGCOD
     end
 
     def results
-      @response.payload["cardActivityList"].map { |payload| GiftCardActivity.new(payload) }
+      @response.payload["cardActivityList"].map do |payload|
+        GiftCardActivity.new(payload)
+      end
     end
   end
 end

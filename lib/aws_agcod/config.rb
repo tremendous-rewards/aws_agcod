@@ -1,6 +1,6 @@
-module AGCOD
+class AGCOD
   class Config
-    attr_writer :uri
+    attr_writer   :uri
     attr_accessor :access_key,
                   :secret_key,
                   :partner_id,
@@ -13,11 +13,15 @@ module AGCOD
       production: "https://agcod-v2.amazon.com"
     }
 
-    def initialize
+    def initialize(hash)
       # API defaults
       @production = false
       @region = "us-east-1"
       @timeout = 30
+
+      hash.each do |name, value|
+        instance_variable_set("@#{name}", value)
+      end
     end
 
     def uri

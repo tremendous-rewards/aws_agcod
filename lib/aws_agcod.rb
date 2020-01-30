@@ -3,17 +3,17 @@ require "aws_agcod/config"
 require "aws_agcod/create_gift_card"
 require "aws_agcod/cancel_gift_card"
 require "aws_agcod/gift_card_activity_list"
+require "aws_agcod/request"
 
-module AGCOD
-  def self.configure(&block)
-    @config = Config.new
+class AGCOD
+  attr_accessor :config, :request, :activity_list, :create_gift_card, :cancel_gift_card
 
-    yield @config
+	def initialize(config_hash)
+		@config = config = Config.new(config_hash)
+		@request = request = Request.new(config)
 
-    nil
-  end
-
-  def self.config
-    @config
-  end
+		@activity_list = GiftCardActivityList.new(request)
+		@create_gift_card = CreateGiftCard.new(request)
+		@cancel_gift_card = CancelGiftCard.new(request)
+	end
 end
