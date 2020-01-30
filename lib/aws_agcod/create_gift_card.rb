@@ -28,6 +28,17 @@ class AGCOD
       ).response
     end
 
+    def card_status
+      status = @response.payload["cardInfo"]["cardStatus"]
+      if ["fulfilled", "created"].include?(status.downcase)
+        :created
+      elsif status.downcase == "refundedtopurchaser"
+        :refunded
+      else
+        :unknown
+      end
+    end
+
     def claim_code
       @response.payload["gcClaimCode"]
     end
