@@ -14,7 +14,7 @@ class AGCOD
       @response = request.create("CancelGiftCard",
         "creationRequestId" => request_id,
         "gcId" => gc_id
-      ).response
+      )
     end
   end
 end

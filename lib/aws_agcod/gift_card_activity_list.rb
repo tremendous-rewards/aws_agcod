@@ -47,7 +47,7 @@ class AGCOD
         "pageIndex" => (page - 1) * per_page,
         "pageSize" => per_page,
         "showNoOps" => show_no_ops
-      ).response
+      )
     end
 
     def results

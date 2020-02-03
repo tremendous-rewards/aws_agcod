@@ -6,7 +6,7 @@ class AGCOD
 
     CURRENCIES = %w(USD EUR JPY CNY CAD GBP).freeze
 
-    attr_accessor :request
+    attr_accessor :request, :response
 
     def_delegators :@response, :status, :success?, :error_message
 
@@ -25,7 +25,9 @@ class AGCOD
           "currencyCode" => currency,
           "amount" => amount
         }
-      ).response
+      )
+
+      self
     end
 
     def card_status
