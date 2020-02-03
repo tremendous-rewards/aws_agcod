@@ -14,6 +14,7 @@ class AGCOD
       # API defaults
       @production = false
       @timeout = 30
+      @region = "us-east-1"
 
       hash.each do |name, value|
         instance_variable_set("@#{name}", value)
