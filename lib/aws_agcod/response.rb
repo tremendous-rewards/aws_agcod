@@ -25,16 +25,20 @@ class AGCOD
       status == "SUCCESS"
     end
 
+    def resend?
+      status == "RESEND"
+    end
+
+    def failure?
+      status == "FAILURE"
+    end
+
     def error_code
       payload["errorCode"]
     end
 
     def error_message
       "#{payload["errorCode"]} #{payload["errorType"]} - #{payload["message"]}"
-    end
-
-    def error_is_retryable?
-      status == "RESEND"
     end
   end
 end

@@ -14,18 +14,19 @@ class AGCOD
       @request = request
     end
 
-    def execute(request_id, amount, currency = "USD")
+    def execute(request_id, amount, currency = "USD", program_id=nil)
       unless CURRENCIES.include?(currency.to_s)
         raise CreateGiftCardError, "Currency #{currency} not supported, available types are #{CURRENCIES.join(", ")}"
       end
 
-      @response = request.create("CreateGiftCard",
+      @response = request.create("CreateGiftCard", {
         "creationRequestId" => request_id,
+        "progamId" => program_id,
         "value" => {
           "currencyCode" => currency,
           "amount" => amount
         }
-      )
+      })
 
       self
     end
