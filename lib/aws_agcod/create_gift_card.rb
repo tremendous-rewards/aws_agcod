@@ -21,7 +21,7 @@ class AGCOD
 
       @response = request.create("CreateGiftCard", {
         "creationRequestId" => request_id,
-        "progamId" => program_id,
+        "programID" => program_id,
         "value" => {
           "currencyCode" => currency,
           "amount" => amount
