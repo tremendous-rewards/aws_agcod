@@ -4,7 +4,7 @@ class AGCOD
   class CreateGiftCard
     extend Forwardable
 
-    CURRENCIES = %w(USD EUR JPY CNY CAD GBP PLN).freeze
+    CURRENCIES = %w(USD EUR JPY CNY CAD GBP PLN TRY).freeze
 
     attr_accessor :request, :response
 
